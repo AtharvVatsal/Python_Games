@@ -1,4 +1,6 @@
 import turtle
+import time
+import random
 
 win = turtle.Screen()
 win.title("Ping Pong")
@@ -102,22 +104,42 @@ while True:
         scoreA += 1
         pen.clear()
         pen.write("Player A : {}  Player B: {}".format(scoreA, scoreB), align="center", font=("Sans Serif", 17, "normal"))
+        if scoreA == 3:
+            pen.clear()
+            pen.goto(0,0)
+            time.sleep(2)
+            pen.write("Player A Wins!\nGame Will Restart soon   ", align="center", font=("Sans Serif", 24, "normal"))
+            
+            pen.goto(0,250)
+            scoreA = 0
+            scoreB = 0
+            ball.goto(0,0)
 
     if ball.xcor() < -390:
         ball.dx *= -1
         scoreB += 1
         pen.clear()
         pen.write("Player A : {}  Player B: {}".format(scoreA, scoreB), align="center", font=("Sans Serif", 17, "normal"))
+        if scoreB == 3:
+            pen.clear()
+            pen.goto(0,0)
+            time.sleep(5)
+            pen.write("Player B Wins!\nGame Will Restart soon", align="center", font=("Sans Serif", 24, "normal"))
+            
+            pen.goto(0,250)
+            scoreA = 0
+            scoreB = 0
+            ball.goto(0,0)
 
     # Pad Collisions
     if (ball.dx > 0) and (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < padB.ycor() + 50 and ball.ycor() > padB.ycor() - 50):
         ball.setx(340)
         ball.dx *= -1
-        #ball.dx *= 1.1  # Increase speed slightly
+        ball.dx *= 1.1  # Increase speed slightly
         ball.dy *= 1.1
 
     if (ball.dx < 0) and (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < padA.ycor() + 50 and ball.ycor() > padA.ycor() - 50):
         ball.setx(-340)
         ball.dx *= -1
-        #ball.dx *= 1.1  # Increase speed slightly
+        ball.dx *= 1.1  # Increase speed slightly
         ball.dy *= 1.1
