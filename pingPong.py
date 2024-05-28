@@ -8,7 +8,7 @@ win.bgcolor("black")
 win.setup(width=800, height=600)
 win.tracer(0)
 
-# Scores
+# Global variable
 scoreA = 0
 scoreB = 0
 
@@ -73,16 +73,52 @@ def padB_down():
         y -= 30
     padB.sety(y)
 
+def displayMenu():
+    global running
+    if not running:
+        pen.clear()
+        pen.goto(0,0)
+        pen.write("Ping Pong Game\nPress Space to Start", align="center",font = ("Sans Serif", 24, "normal"))
+
+
+def startGame():
+    global scoreA, scoreB, running
+    scoreB = 0
+    scoreA = 0
+    pen.clear()
+    pen.goto(0, 250)
+    pen.write("Player A : 0  Player B : 0",align=("Center"), font = ("Sans Serif", 17, "normal"))
+    running = True
+
+def restartGame():
+    global running
+    pen.clear()
+    pen.goto(0,0)
+    if scoreA == 10:
+        pen.write(f"Player A Wins!\nGame will restart soon", align="center", font=("Sans Serif", 24, "normal"))
+    elif scoreB == 10:
+        pen.write(f"Player B Wins!\nGame will restart soon", align="center", font=("Sans Serif", 24, "normal"))
+    win.update()
+    running = False
+    win.ontimer(displayMenu, 2000)
 # Binding
 win.listen()
 win.onkeypress(padA_up, "w")
 win.onkeypress(padA_down, "s")
 win.onkeypress(padB_up, "Up")
 win.onkeypress(padB_down, "Down")
+win.onkeypress(startGame, "space")
+
+#First Time Menu
+running = False
+displayMenu()
+
 
 # Main game loop
 while True:
     win.update()
+    if not running:
+        continue
     
     # Ball Movement
     ball.setx(ball.xcor() + ball.dx)
@@ -103,32 +139,16 @@ while True:
         scoreA += 1
         pen.clear()
         pen.write("Player A : {}  Player B: {}".format(scoreA, scoreB), align="center", font=("Sans Serif", 17, "normal"))
-        if scoreA == 3:
-            pen.clear()
-            pen.goto(0,0)
-            time.sleep(2)
-            pen.write("Player A Wins!\nGame Will Restart soon   ", align="center", font=("Sans Serif", 24, "normal"))
-            
-            pen.goto(0,250)
-            scoreA = 0
-            scoreB = 0
-            ball.goto(0,0)
+        if scoreA == 10:
+            restartGame()
 
     if ball.xcor() < -390:
         ball.dx *= -1
         scoreB += 1
         pen.clear()
         pen.write("Player A : {}  Player B: {}".format(scoreA, scoreB), align="center", font=("Sans Serif", 17, "normal"))
-        if scoreB == 3:
-            pen.clear()
-            pen.goto(0,0)
-            time.sleep(5)
-            pen.write("Player B Wins!\nGame Will Restart soon", align="center", font=("Sans Serif", 24, "normal"))
-            
-            pen.goto(0,250)
-            scoreA = 0
-            scoreB = 0
-            ball.goto(0,0)
+        if scoreB == 10:
+            restartGame()
 
         # Pad Collisions
     if (ball.dx > 0) and (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < padB.ycor() + 50 and ball.ycor() > padB.ycor() - 50):
