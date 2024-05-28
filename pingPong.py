@@ -1,6 +1,5 @@
 import turtle
 import time
-#import random
 
 win = turtle.Screen()
 win.title("Ping Pong")
