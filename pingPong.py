@@ -1,6 +1,6 @@
 import turtle
 import time
-import random
+#import random
 
 win = turtle.Screen()
 win.title("Ping Pong")
@@ -39,7 +39,6 @@ ball.penup()
 ball.goto(0, 0)
 ball.dx = 0.3
 ball.dy = 0.3
-
 # Pen
 pen = turtle.Turtle()
 pen.speed(0)
@@ -90,7 +89,7 @@ while True:
     ball.sety(ball.ycor() + ball.dy)
 
     # Border Control
-    # Y Movement
+        # Y Movement
     if ball.ycor() > 290:
         ball.sety(290)
         ball.dy *= -1
@@ -98,7 +97,7 @@ while True:
         ball.sety(-290)
         ball.dy *= -1
     
-    # X Movement
+        # X Movement
     if ball.xcor() > 390:
         ball.dx *= -1
         scoreA += 1
@@ -131,7 +130,7 @@ while True:
             scoreB = 0
             ball.goto(0,0)
 
-    # Pad Collisions
+        # Pad Collisions
     if (ball.dx > 0) and (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < padB.ycor() + 50 and ball.ycor() > padB.ycor() - 50):
         ball.setx(340)
         ball.dx *= -1
