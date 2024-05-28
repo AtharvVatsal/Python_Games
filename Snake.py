@@ -4,7 +4,7 @@ import random
 # Constants (Can Change them According to will)
 GAME_WIDTH = 800
 GAME_HEIGHT = 800
-SPEED = 100              # Lower number, faster game
+SPEED = 125              # Lower number, faster game
 SPACE_SIZE = 50         # 800/50 = 16 possible locations for food
 BODY_PARTS = 3          # Initial Body parts of snake
 SNAKE_COLOR = "#00FF00"
@@ -51,6 +51,16 @@ def nextTurn(snake, food):
     elif dir == "right":
         x += SPACE_SIZE
 
+    # Wrap-around logic
+    if x < 0:
+        x = GAME_WIDTH - SPACE_SIZE
+    elif x >= GAME_WIDTH:
+        x = 0
+    if y < 0:
+        y = GAME_HEIGHT - SPACE_SIZE
+    elif y >= GAME_HEIGHT:
+        y = 0
+
     snake.coordinates.insert(0, [x, y])
     square = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR)
     snake.squares.insert(0, square)
@@ -89,9 +99,6 @@ def changeDir(newDir):
 
 def checkCollisions(snake):
     x, y = snake.coordinates[0]
-
-    if x < 0 or x >= GAME_WIDTH or y < 0 or y >= GAME_HEIGHT:
-        return True
 
     for bodyPart in snake.coordinates[1:]:
         if x == bodyPart[0] and y == bodyPart[1]:
